@@ -1,6 +1,6 @@
 import { cache } from 'react';
 
-import { db } from '@/lib/db/index';
+import { db } from '@/lib/db';
 
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
 import { Lucia, type Session, type User } from 'lucia';

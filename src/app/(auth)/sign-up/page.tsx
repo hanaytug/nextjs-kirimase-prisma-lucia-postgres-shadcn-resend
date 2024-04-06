@@ -40,19 +40,19 @@ export default function SignUpPage() {
             <div className='grid gap-4'>
               <div className='grid grid-cols-2 gap-4'>
                 <div className='grid gap-2'>
-                  <Label htmlFor='first-name'>First Name</Label>
+                  <Label htmlFor='firstName'>First Name</Label>
                   <Input
-                    name='first-name'
-                    id='first-name'
+                    name='firstName'
+                    id='firstName'
                     placeholder='John'
                     required
                   />
                 </div>
                 <div className='grid gap-2'>
-                  <Label htmlFor='last-name'>Last Name</Label>
+                  <Label htmlFor='lastName'>Last Name</Label>
                   <Input
-                    name='last-name'
-                    id='last-name'
+                    name='lastName'
+                    id='lastName'
                     placeholder='Doe'
                     required
                   />

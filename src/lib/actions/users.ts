@@ -15,7 +15,8 @@ import {
   genericError,
   getUserAuth,
   setAuthCookie,
-  validateAuthFormData,
+  validateLoginFormData,
+  validateRegisterFormData,
 } from '../auth/utils';
 import { updateUserSchema } from '../db/schema/auth';
 
@@ -27,7 +28,7 @@ export async function signInAction(
   _: ActionResult,
   formData: FormData
 ): Promise<ActionResult> {
-  const { data, error } = validateAuthFormData(formData);
+  const { data, error } = validateLoginFormData(formData);
   if (error !== null) return { error };
 
   try {
@@ -64,19 +65,20 @@ export async function signUpAction(
   _: ActionResult,
   formData: FormData
 ): Promise<ActionResult> {
-  const { data, error } = validateAuthFormData(formData);
+  const { data, error } = validateRegisterFormData(formData);
 
+  console.log(data);
   if (error !== null) return { error };
 
   const hashedPassword = await new Argon2id().hash(data.password);
   const userId = generateId(15);
 
   try {
-    // TODO: check if username is already used
-    // TODO: add firstName and lastName
     await db.user.create({
       data: {
         id: userId,
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         hashedPassword,
       },

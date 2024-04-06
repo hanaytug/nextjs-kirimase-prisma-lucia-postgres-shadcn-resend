@@ -2,7 +2,12 @@ import { type Cookie } from 'lucia';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { UsernameAndPassword, authenticationSchema } from '../db/schema/auth';
+import {
+  LoginSchema,
+  RegisterSchema,
+  loginSchema,
+  registerSchema,
+} from '../db/schema/auth';
 import { validateRequest } from './lucia';
 
 export type AuthSession = {
@@ -31,13 +36,6 @@ export const getUserAuth = async (): Promise<AuthSession> => {
   };
 };
 
-/*
-export const getUserEmailVerification = async () => {
-  const { user } = await validateRequest()
-  if (!user?.emailVerified) redirect('/verify-email')
-}
-*/
-
 export const checkAuth = async () => {
   const { session } = await validateRequest();
   if (!session) redirect('/sign-in');
@@ -46,24 +44,50 @@ export const checkAuth = async () => {
 export const genericError = { error: 'Error, please try again.' };
 
 export const setAuthCookie = (cookie: Cookie) => {
-  // cookies().set(cookie.name, cookie.value, cookie.attributes); // <- suggested approach from the docs, but does not work with `next build` locally
-  cookies().set(cookie);
+  cookies().set(cookie.name, cookie.value, cookie.attributes); // <- suggested approach from the docs, but does not work with `next build` locally
 };
 
 const getErrorMessage = (errors: any): string => {
-  if (errors.email) return 'Invalid Email';
+  if (errors.firstName) return 'Invalid First Name - ' + errors.firstName[0];
+  if (errors.lastName) return 'Invalid Last Name - ' + errors.lastName[0];
+  if (errors.email) return 'Invalid Email Email Address - ' + errors.email[0];
   if (errors.password) return 'Invalid Password - ' + errors.password[0];
   return ''; // return a default error message or an empty string
 };
 
-export const validateAuthFormData = (
+export const validateRegisterFormData = (
   formData: FormData
-):
-  | { data: UsernameAndPassword; error: null }
-  | { data: null; error: string } => {
+): { data: RegisterSchema; error: null } | { data: null; error: string } => {
+  const firstName = formData.get('firstName');
+  const lastName = formData.get('lastName');
   const email = formData.get('email');
   const password = formData.get('password');
-  const result = authenticationSchema.safeParse({ email, password });
+  const result = registerSchema.safeParse({
+    firstName,
+    lastName,
+    email,
+    password,
+  });
+
+  if (!result.success) {
+    return {
+      data: null,
+      error: getErrorMessage(result.error.flatten().fieldErrors),
+    };
+  }
+
+  return { data: result.data, error: null };
+};
+
+export const validateLoginFormData = (
+  formData: FormData
+): { data: LoginSchema; error: null } | { data: null; error: string } => {
+  const email = formData.get('email');
+  const password = formData.get('password');
+  const result = loginSchema.safeParse({
+    email,
+    password,
+  });
 
   if (!result.success) {
     return {
