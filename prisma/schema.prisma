@@ -5,28 +5,19 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator zod {
-  provider              = "zod-prisma"
-  output                = "./zod" 
-  relationModel         = true 
-  modelCase             = "camelCase" 
-  modelSuffix           = "Schema" 
-  useDecimalJs          = true 
-  prismaJsonNullability = true 
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id             String    @id
-  email          String    @unique
-  hashedPassword String
-  name           String?
-  sessions       Session[]
+  id                    String                 @id
+  email                 String                 @unique
+  emailVerified         Boolean                @default(false)
+  hashedPassword        String
+  name                  String?
+  sessions              Session[]
+  EmailVerificationCode EmailVerificationCode?
 }
 
 model Session {
@@ -34,4 +25,12 @@ model Session {
   userId    String
   expiresAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model EmailVerificationCode {
+  id        Int      @id @default(autoincrement())
+  userId    String   @unique
+  code      String
+  expiresAt DateTime
+  User      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
