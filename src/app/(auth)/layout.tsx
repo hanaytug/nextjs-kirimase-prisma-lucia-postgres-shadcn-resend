@@ -9,5 +9,11 @@ export default async function AuthLayout({
   const session = await getUserAuth();
   if (session?.session) redirect("/dashboard");
 
-  return ( <div className="bg-muted h-screen pt-8">{children}</div> );
+  return (
+      <>
+        <div className="flex h-screen items-center justify-center">
+          <div className="w-96">{children}</div>
+        </div>
+      </>
+  );
 }

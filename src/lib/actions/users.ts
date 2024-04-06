@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from 'next/navigation'
 
-import { db } from "@/lib/db/index";
+import { db } from "@/lib/db";
 
 import { Argon2id } from 'oslo/password'
 import { generateId } from 'lucia'
@@ -70,6 +70,8 @@ export async function signUpAction(
   const userId = generateId(15)
 
   try {
+    // TODO: check if username is already used
+    // TODO: add firstName and lastName
     await db.user.create({
       data: {
         id: userId,
