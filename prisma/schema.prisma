@@ -19,6 +19,9 @@ model User {
   hashedPassword        String
   sessions              Session[]
   EmailVerificationCode EmailVerificationCode?
+  PasswordResetToken    PasswordResetToken?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @default(now()) @updatedAt
 }
 
 model Session {
@@ -26,6 +29,7 @@ model Session {
   userId    String
   expiresAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }
 
 model EmailVerificationCode {
@@ -34,4 +38,14 @@ model EmailVerificationCode {
   code      String
   expiresAt DateTime
   User      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  userId    String   @unique
+  tokenHash String   @unique
+  expiresAt DateTime
+  User      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }

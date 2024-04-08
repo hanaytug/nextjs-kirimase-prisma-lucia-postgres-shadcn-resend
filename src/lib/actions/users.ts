@@ -1,24 +1,25 @@
 'use server';
 
-import { db } from '@/lib/db';
-import { verificationEmailSchema } from '@/lib/email/utils';
-
-import { TimeSpan, generateId } from 'lucia';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-import { createDate, isWithinExpirationDate } from 'oslo';
-import { alphabet, generateRandomString } from 'oslo/crypto';
-import { Argon2id } from 'oslo/password';
-
-import { lucia, validateRequest } from '../auth/lucia';
+import { lucia, validateRequest } from '@/lib/auth/lucia';
 import {
   genericError,
   getUserAuth,
   setAuthCookie,
   validateLoginFormData,
   validateRegisterFormData,
-} from '../auth/utils';
-import { updateUserSchema } from '../db/schema/auth';
+  validateResetPasswordFormData,
+} from '@/lib/auth/utils';
+import { db } from '@/lib/db';
+import { updateUserSchema } from '@/lib/db/schema/auth';
+import { verificationEmailSchema } from '@/lib/email/utils';
+
+import { TimeSpan, generateId } from 'lucia';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { createDate, isWithinExpirationDate } from 'oslo';
+import { alphabet, generateRandomString, sha256 } from 'oslo/crypto';
+import { encodeHex } from 'oslo/encoding';
+import { Argon2id } from 'oslo/password';
 
 interface ActionResult {
   error: string;
@@ -61,13 +62,42 @@ export async function signInAction(
   }
 }
 
+export async function passwordResetAction(
+  _: ActionResult,
+  formData: FormData
+): Promise<ActionResult & { success?: boolean }> {
+  const { data, error } = validateResetPasswordFormData(formData);
+
+  if (error !== null) return { error };
+
+  try {
+    const existingUser = await db.user.findUnique({
+      where: { email: data.email.toLowerCase() },
+    });
+
+    if (existingUser) {
+      const verificationToken = await createPasswordResetToken(existingUser.id);
+      const verificationLink =
+        'http://localhost:3000/reset-password?token=' + verificationToken;
+
+      console.log('verificationLink', verificationLink);
+      //await sendPasswordResetToken(email, verificationLink);
+
+      return { success: true, error: '' };
+    } else {
+      return { error: 'Account not found' };
+    }
+  } catch (e) {
+    return genericError;
+  }
+}
+
 export async function signUpAction(
   _: ActionResult,
   formData: FormData
 ): Promise<ActionResult> {
   const { data, error } = validateRegisterFormData(formData);
 
-  console.log(data);
   if (error !== null) return { error };
 
   const hashedPassword = await new Argon2id().hash(data.password);
@@ -88,7 +118,7 @@ export async function signUpAction(
   }
 
   const verificationCode = await generateEmailVerificationCode(userId);
-  //await sendVerificationCode("John", "Doe", data?.email, verificationCode);
+  await sendVerificationCode('John', 'Doe', data?.email, verificationCode);
 
   const session = await lucia.createSession(userId, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
@@ -134,18 +164,22 @@ async function sendVerificationCode(
 }
 
 export async function signOutAction(): Promise<ActionResult> {
-  const { session } = await validateRequest();
-  if (!session) {
-    return {
-      error: 'Unauthorized',
-    };
+  try {
+    const { session } = await validateRequest();
+    if (!session) {
+      return {
+        error: 'Unauthorized',
+      };
+    }
+
+    await lucia.invalidateSession(session.id);
+
+    const sessionCookie = lucia.createBlankSessionCookie();
+    setAuthCookie(sessionCookie);
+    redirect('/sign-in');
+  } catch (e) {
+    return genericError;
   }
-
-  await lucia.invalidateSession(session.id);
-
-  const sessionCookie = lucia.createBlankSessionCookie();
-  setAuthCookie(sessionCookie);
-  redirect('/sign-in');
 }
 
 export async function updateUser(
@@ -222,4 +256,20 @@ export async function verifyEmailAction(
   } catch (e) {
     return genericError;
   }
+}
+
+async function createPasswordResetToken(userId: string): Promise<string> {
+  await db.passwordResetToken.deleteMany({
+    where: { userId: { equals: userId } },
+  });
+  const tokenId = generateId(40);
+  const tokenHash = encodeHex(await sha256(new TextEncoder().encode(tokenId)));
+  await db.passwordResetToken.create({
+    data: {
+      userId: userId,
+      tokenHash: tokenHash,
+      expiresAt: createDate(new TimeSpan(2, 'h')),
+    },
+  });
+  return tokenId;
 }

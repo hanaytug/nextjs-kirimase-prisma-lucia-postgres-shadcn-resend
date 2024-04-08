@@ -32,6 +32,14 @@ export const loginSchema = z.object({
     .max(15, { message: 'cannot be more than 15 characters long' }),
 });
 
+export const resetPasswordSchema = z.object({
+  email: z
+    .string()
+    .email()
+    .min(5, { message: 'must be at least 5 characters long' })
+    .max(31, { message: 'cannot be more than 31 characters long' }),
+});
+
 export const updateUserSchema = z.object({
   name: z.string().min(3).optional(),
   email: z.string().min(4).optional(),
@@ -41,3 +49,4 @@ export const updateUserSchema = z.object({
 
 export type RegisterSchema = z.infer<typeof registerSchema>;
 export type LoginSchema = z.infer<typeof loginSchema>;
+export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;

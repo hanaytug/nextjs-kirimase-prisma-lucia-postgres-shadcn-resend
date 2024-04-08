@@ -5,8 +5,10 @@ import { redirect } from 'next/navigation';
 import {
   LoginSchema,
   RegisterSchema,
+  ResetPasswordSchema,
   loginSchema,
   registerSchema,
+  resetPasswordSchema,
 } from '../db/schema/auth';
 import { validateRequest } from './lucia';
 
@@ -21,6 +23,7 @@ export type AuthSession = {
     };
   } | null;
 };
+
 export const getUserAuth = async (): Promise<AuthSession> => {
   const { session, user } = await validateRequest();
   if (!session) return { session: null };
@@ -67,6 +70,27 @@ export const validateRegisterFormData = (
     lastName,
     email,
     password,
+  });
+
+  if (!result.success) {
+    return {
+      data: null,
+      error: getErrorMessage(result.error.flatten().fieldErrors),
+    };
+  }
+
+  return { data: result.data, error: null };
+};
+
+export const validateResetPasswordFormData = (
+  formData: FormData
+):
+  | { data: ResetPasswordSchema; error: null }
+  | { data: null; error: string } => {
+  const email = formData.get('email');
+
+  const result = resetPasswordSchema.safeParse({
+    email,
   });
 
   if (!result.success) {

@@ -3,16 +3,12 @@
 import { useFormStatus } from 'react-dom';
 import { useFormState } from 'react-dom';
 
-import AuthFormError from '@/components/auth/AuthFormError';
+import { AuthFooterSignUp } from '@/app/(auth)/components/AuthFooterSignUp';
+import { AuthHeader } from '@/app/(auth)/components/AuthHeader';
 
+import AuthFormError from '@/components/auth/AuthFormError';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
@@ -29,10 +25,12 @@ export default function SignUpPage() {
 
   return (
     <>
+      <AuthHeader />
       <Card className='mx-auto max-w-sm'>
         <CardHeader>
-          <CardTitle className='text-xl'>Sign Up</CardTitle>
-          <CardDescription>Enter your information to sign up</CardDescription>
+          <CardTitle className='text-2xl text-center'>
+            Let&apos;s get started
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <AuthFormError state={state} />
@@ -78,17 +76,28 @@ export default function SignUpPage() {
                   required
                 />
               </div>
+              <div className='grid gap-2'>
+                <Label htmlFor='confirm-password'>Confirm Password</Label>
+                <Input
+                  type='password'
+                  name='confirm-password'
+                  id='confirm-password'
+                  placeholder='******'
+                  required
+                />
+              </div>
               <SubmitButton />
             </div>
             <div className='mt-4 text-center text-sm'>
-              Already have an account?{' '}
+              Already a user?{' '}
               <Link href='/sign-in' className='underline'>
-                Sign in
+                Login in
               </Link>
             </div>
           </form>
         </CardContent>
       </Card>
+      <AuthFooterSignUp />
     </>
   );
 }
@@ -97,7 +106,7 @@ const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
     <Button className='w-full' type='submit' disabled={pending}>
-      Sign{pending ? 'ing' : ''} up{' '}
+      Get Started
       <Loader className={cn('animate-spin', { hidden: !pending })} />
     </Button>
   );

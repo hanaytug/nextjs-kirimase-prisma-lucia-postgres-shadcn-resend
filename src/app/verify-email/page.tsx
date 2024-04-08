@@ -5,7 +5,6 @@ import { useFormStatus } from 'react-dom';
 import { useFormState } from 'react-dom';
 
 import AuthFormError from '@/components/auth/AuthFormError';
-
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -28,7 +27,8 @@ import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import { Loader } from 'lucide-react';
 import Link from 'next/link';
 
-export default function SignInPage() {
+// TODO Resend Verification Code
+export default function VerifyEmailPage() {
   const [state, formAction] = useFormState(verifyEmailAction, {
     error: '',
   });
@@ -38,7 +38,7 @@ export default function SignInPage() {
   return (
     <Card className='mx-auto max-w-sm'>
       <CardHeader>
-        <CardTitle className='text-2xl'>Verify your email address</CardTitle>
+        <CardTitle className='text-2xl'>Verify your email</CardTitle>
         <CardDescription>
           Enter the code below to confirm your email address.
         </CardDescription>
@@ -70,13 +70,6 @@ export default function SignInPage() {
             <SubmitButton />
           </div>
         </form>
-        <div className='text-center text-sm'>
-          {value === '' ? (
-            <>Enter your one-time password.</>
-          ) : (
-            <>You entered: {value.toUpperCase()}</>
-          )}
-        </div>
         <div className='mt-4 text-center text-sm'>
           Did&apos;t receive a code?{' '}
           <Link href='/sign-up' className='underline'>

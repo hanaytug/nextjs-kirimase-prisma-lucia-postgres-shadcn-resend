@@ -3,16 +3,12 @@
 import { useFormStatus } from 'react-dom';
 import { useFormState } from 'react-dom';
 
-import AuthFormError from '@/components/auth/AuthFormError';
+import { AuthFooter } from '@/app/(auth)/components/AuthFooter';
+import { AuthHeader } from '@/app/(auth)/components/AuthHeader';
 
+import AuthFormError from '@/components/auth/AuthFormError';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
@@ -28,55 +24,60 @@ export default function SignInPage() {
   });
 
   return (
-    <Card className='mx-auto max-w-sm'>
-      <CardHeader>
-        <CardTitle className='text-2xl'>Sign In</CardTitle>
-        <CardDescription>Sign in to your account</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <AuthFormError state={state} />
-        <form action={formAction}>
-          <div className='grid gap-4'>
-            <div className='grid gap-2'>
-              <Label htmlFor='email'>Email Address</Label>
-              <Input
-                name='email'
-                id='email'
-                type='email'
-                placeholder='john.doe@domain.com'
-                required
-              />
-            </div>
-            <div className='grid gap-2'>
-              <div className='flex items-center'>
-                <Label htmlFor='password'>Password</Label>
-                <Link
-                  href='/forgot-your-password'
-                  className='ml-auto inline-block text-sm underline'
-                >
-                  Forgot your password?
-                </Link>
+    <>
+      <AuthHeader />
+      <Card className='mx-auto max-w-sm'>
+        <CardHeader>
+          <CardTitle className='text-2xl text-center'>
+            Login to your account
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AuthFormError state={state} />
+          <form action={formAction}>
+            <div className='grid gap-4'>
+              <div className='grid gap-2'>
+                <Label htmlFor='email'>Email Address</Label>
+                <Input
+                  name='email'
+                  id='email'
+                  type='email'
+                  placeholder='john.doe@domain.com'
+                  required
+                />
               </div>
-              <Input
-                type='password'
-                name='password'
-                id='password'
-                placeholder='******'
-                required
-              />
+              <div className='grid gap-2'>
+                <div className='flex items-center'>
+                  <Label htmlFor='password'>Password</Label>
+                  <Link
+                    href='/reset-password'
+                    className='ml-auto inline-block text-sm underline'
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
+                <Input
+                  type='password'
+                  name='password'
+                  id='password'
+                  placeholder='******'
+                  required
+                />
+              </div>
+              <SubmitButton />
             </div>
-            <SubmitButton />
-          </div>
-        </form>
+          </form>
 
-        <div className='mt-4 text-center text-sm'>
-          Don&apos;t have an account?{' '}
-          <Link href='/sign-up' className='underline'>
-            Sign up
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+          <div className='mt-4 text-center text-sm'>
+            Don&apos;t have an account?{' '}
+            <Link href='/sign-up' className='underline'>
+              Continue
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+      <AuthFooter />
+    </>
   );
 }
 

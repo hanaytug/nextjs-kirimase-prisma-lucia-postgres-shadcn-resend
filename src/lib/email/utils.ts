@@ -5,9 +5,13 @@ export const emailSchema = z.object({
   email: z.string().email(),
 });
 
+export const resetPasswordSchema = z.object({
+  password: z.string().min(3),
+});
+
 export const verificationEmailSchema = z.object({
   firstName: z.string().min(3),
   lastName: z.string().min(3),
   email: z.string().email(),
-  verificationCode: z.string().min(6),
+  verificationCode: z.string().min(6).max(6),
 });

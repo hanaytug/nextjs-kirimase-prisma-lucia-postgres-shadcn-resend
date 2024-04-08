@@ -8,6 +8,19 @@ import { cookies } from 'next/headers';
 
 const adapter = new PrismaAdapter(db.session, db.user);
 
+declare module 'lucia' {
+  interface Register {
+    Lucia: typeof lucia;
+    DatabaseUserAttributes: DatabaseUserAttributes;
+  }
+}
+
+interface DatabaseUserAttributes {
+  email: string;
+  name: string;
+  emailVerified: boolean;
+}
+
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
     expires: false,
@@ -24,19 +37,6 @@ export const lucia = new Lucia(adapter, {
     };
   },
 });
-
-declare module 'lucia' {
-  interface Register {
-    Lucia: typeof lucia;
-    DatabaseUserAttributes: DatabaseUserAttributes;
-  }
-}
-
-interface DatabaseUserAttributes {
-  email: string;
-  name: string;
-  emailVerified: boolean;
-}
 
 export const validateRequest = cache(
   async (): Promise<

@@ -6,13 +6,13 @@
   "jsxSingleQuote": true,
   "importOrder": [
     "^react",
-    "^@/components/auth/(.*)$",
-    "^@/components/ui/(.*)$",
-    "^@/components/emails/(.*)$",
+    "^@/app/(.*)$",
+    "^@/components/(.*)$",
     "^@/lib/(.*)$",
-    "^.(css|scss)$",
+    "^@/styles/.(.*)$",
     "<THIRD_PARTY_MODULES>",
-    "^[./]"
+    "^[./]",
+    "^@/config/.(.*)$"
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
