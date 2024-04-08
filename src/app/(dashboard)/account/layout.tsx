@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { SettingsNav } from '@/app/(app)/account/components/SettingsNav';
+import { SettingsNav } from '@/app/(dashboard)/account/_components/SettingsNav';
 
-interface SettingsLayout {
+export default async function AccountLayout({
+  children,
+}: {
   children: React.ReactNode;
-}
-
-export default async function SettingsLayout({ children }: SettingsLayout) {
+}) {
   return (
     <>
       <div className='grid w-full max-w-6xl gap-2'>

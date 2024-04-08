@@ -1,11 +1,11 @@
-import PublicFooter from '@/app/(public)/components/PublicFooter';
-import PublicHeader from '@/app/(public)/components/PublicHeader';
+import { HomeFooter } from '@/app/(home)/_components/HomeFooter';
+import { HomeHeader } from '@/app/(home)/_components/HomeHeader';
 
 export default function Custom404() {
   return (
     <>
       <div className='flex flex-col h-screen'>
-        <PublicHeader />
+        <HomeHeader />
         <main className='flex-1 flex flex-col items-center justify-center'>
           <div className='text-center space-y-2'>
             <h1 className='text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl'>
@@ -17,7 +17,7 @@ export default function Custom404() {
             </p>
           </div>
         </main>
-        <PublicFooter />
+        <HomeFooter />
       </div>
     </>
   );

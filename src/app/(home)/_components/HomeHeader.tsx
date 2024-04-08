@@ -9,18 +9,18 @@ import Link from 'next/link';
 
 import { siteConfig } from '@/config/site';
 
-export default async function Component() {
+export const HomeHeader = async () => {
   const session = await getUserAuth();
 
   return (
     <header className='flex h-16 w-full items-center px-4 md:px-6 border-b'>
-      <Link href='/' className='flex items-center gap-2 font-semibold'>
+      <Link href='/public' className='flex items-center gap-2 font-semibold'>
         <SiteIcon className='h-6 w-6' />
         <span className=''>{siteConfig.name}</span>
       </Link>
       <div className='ml-auto flex items-center gap-4'>
         <nav className='flex-1 ml-6'>
-          <Link className='font-medium' href='/'>
+          <Link className='font-medium' href='/public'>
             Home
           </Link>
         </nav>
@@ -48,4 +48,4 @@ export default async function Component() {
       </div>
     </header>
   );
-}
+};

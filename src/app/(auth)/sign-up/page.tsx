@@ -3,8 +3,8 @@
 import { useFormStatus } from 'react-dom';
 import { useFormState } from 'react-dom';
 
-import { AuthFooterSignUp } from '@/app/(auth)/components/AuthFooterSignUp';
-import { AuthHeader } from '@/app/(auth)/components/AuthHeader';
+import { AuthFooterSignUp } from '@/app/(auth)/_components/AuthFooterSignUp';
+import { AuthHeader } from '@/app/(auth)/_components/AuthHeader';
 
 import AuthFormError from '@/components/auth/AuthFormError';
 import { Button } from '@/components/ui/button';

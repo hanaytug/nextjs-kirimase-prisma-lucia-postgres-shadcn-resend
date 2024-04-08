@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { AppHeader } from '@/app/(app)/components/AppHeader';
-import { AppNav } from '@/app/(app)/components/AppNav';
+import { DashboardHeader } from '@/app/(dashboard)/_components/DashboardHeader';
+import { DashboardNav } from '@/app/(dashboard)/_components/DashboardNav';
 
 import { checkAuth, getUserAuth } from '@/lib/auth/utils';
 
 import { redirect } from 'next/navigation';
 
-interface AppLayoutProps {
+export default async function DashboardLayout({
+  children,
+}: {
   children: React.ReactNode;
-}
-
-export default async function AppLayout({ children }: AppLayoutProps) {
+}) {
   await checkAuth();
 
   const session = await getUserAuth();
@@ -20,9 +20,9 @@ export default async function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
       <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
-        <AppNav />
+        <DashboardNav />
         <div className='flex flex-col'>
-          <AppHeader />
+          <DashboardHeader />
           <main className='flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6'>
             {children}
           </main>

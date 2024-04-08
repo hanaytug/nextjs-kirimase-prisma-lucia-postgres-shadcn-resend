@@ -1,14 +1,15 @@
-import SiteFooter from '@/app/(public)/components/PublicFooter';
-import SiteNavbar from '@/app/(public)/components/PublicHeader';
-import LandingPage from '@/app/(public)/components/landing-page';
+import { HomeFooter } from '@/app/(home)/_components/HomeFooter';
+import { HomeHeader } from '@/app/(home)/_components/HomeHeader';
+
+import LandingPage from 'src/app/(home)/_components/landing-page';
 
 export default function HomePage() {
   return (
     <>
       <div className='flex flex-col min-h-screen'>
-        <SiteNavbar />
+        <HomeHeader />
         <LandingPage />
-        <SiteFooter />
+        <HomeFooter />
       </div>
     </>
   );

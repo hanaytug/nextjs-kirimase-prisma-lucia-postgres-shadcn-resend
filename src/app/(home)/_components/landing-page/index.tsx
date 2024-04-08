@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { ImageResponse } from 'next/og';
 
 export default function LandingPage() {
   return (
