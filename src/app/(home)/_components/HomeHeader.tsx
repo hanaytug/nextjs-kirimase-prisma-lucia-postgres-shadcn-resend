@@ -14,19 +14,16 @@ export const HomeHeader = async () => {
 
   return (
     <header className='flex h-16 w-full items-center px-4 md:px-6 border-b'>
-      <Link href='/public' className='flex items-center gap-2 font-semibold'>
+      <Link href='/' className='flex items-center gap-2 font-semibold'>
         <SiteIcon className='h-6 w-6' />
         <span className=''>{siteConfig.name}</span>
       </Link>
       <div className='ml-auto flex items-center gap-4'>
         <nav className='flex-1 ml-6'>
-          <Link className='font-medium' href='/public'>
+          <Link className='font-medium' href='/'>
             Home
           </Link>
         </nav>
-        <Link className='font-medium' href='/docs'>
-          Docs
-        </Link>
         {session?.session ? (
           <Link
             className='inline-flex h-10 items-center justify-center rounded-md bg-neutral-900 px-8 text-sm font-medium text-neutral-50 shadow transition-colors hover:bg-neutral-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-50/90 dark:focus-visible:ring-neutral-300'
