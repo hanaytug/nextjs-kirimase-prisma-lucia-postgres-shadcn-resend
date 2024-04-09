@@ -40,9 +40,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: siteConfig.name,
     description: siteConfig.description,
-    url: 'https://www.localhost:3000',
+    url: 'https://anvilinc.vercel.app/',
     images: {
-      url: 'https://www.example.com/image.jpg',
+      url: 'https://anvilinc.vercel.app/api/og?title=Anvil+Inc.',
+      width: 1200,
+      height: 630,
       alt: siteConfig.description,
     },
     locale: 'en-US',
