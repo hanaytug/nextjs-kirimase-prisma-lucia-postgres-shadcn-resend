@@ -76,8 +76,8 @@ const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
     <Button className='w-full' type='submit' disabled={pending}>
-      Reset{pending ? 'ting' : ''} Password{' '}
       <Loader className={cn('animate-spin', { hidden: !pending })} />
+      Reset{pending ? 'ting' : ''} Password{' '}
     </Button>
   );
 };

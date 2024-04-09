@@ -106,8 +106,8 @@ const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
     <Button className='w-full' type='submit' disabled={pending}>
-      Get Started
       <Loader className={cn('animate-spin', { hidden: !pending })} />
+      Get{pending ? 'ting' : ''} Started
     </Button>
   );
 };
