@@ -11,6 +11,9 @@ import '@/styles/globals.css';
 
 import type { Metadata, Viewport } from 'next';
 
+import faviconDark from '../../public/favicon-dark.ico';
+import faviconLight from '../../public/favicon-light.ico';
+
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
@@ -20,20 +23,7 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   icons: {
-    icon: [
-      {
-        rel: 'icon',
-        type: 'image/x-icon',
-        media: '(prefers-color-scheme: light)',
-        url: '/favicon-light.ico',
-      },
-      {
-        rel: 'icon',
-        type: 'image/x-icon',
-        media: '(prefers-color-scheme: dark)',
-        url: '/favicon-dark.ico',
-      },
-    ],
+    icon: '/favicon-dark.ico',
     shortcut: '/favicon-16x16.ico',
     apple: '/apple-touch-icon.png',
   },
@@ -67,8 +57,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const sessionData = await validateRequest();
-
   return (
     <html lang='en' suppressHydrationWarning>
       <body
