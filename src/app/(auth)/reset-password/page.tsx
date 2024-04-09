@@ -35,7 +35,7 @@ export default function ResetPasswordPage() {
       <Card className='mx-auto max-w-sm'>
         <CardHeader>
           <CardTitle className='text-2xl text-center'>
-            Forgot Password?
+            Forgot Password
           </CardTitle>
           <CardDescription>
             Don’t worry! Fill in your email and we&apos;ll send you a link to
